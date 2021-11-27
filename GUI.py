@@ -7,11 +7,11 @@ from tkinter import *
 from Funkcje import *
 
 
-def on_black(num): # definicja funkcji zaimplementowanej pozniej
+def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
 
 
-def clear(): # definicja funkcji zaimplementowanej pozniej
+def clear():  # definicja funkcji zaimplementowanej pozniej
     clear1()
 
 
@@ -161,7 +161,7 @@ poleG5.grid(row=6, column=4)
 window.config(background='#100b40')  # kolor tła okna
 
 
-def on_black1(num): # zamalowanie wybranego kafelka na czarno
+def on_black1(num):  # zamalowanie wybranego kafelka na czarno
     if num == 'A1':
         poleA1.configure(fg="black", bg="black")
     if num == 'A2':
@@ -234,7 +234,7 @@ def on_black1(num): # zamalowanie wybranego kafelka na czarno
         poleG5.configure(fg="black", bg="black")
 
 
-def clear1(): # reset planszy do poziomu startowego
+def clear1():  # reset planszy do poziomu startowego
     poleA1.configure(fg="gray", bg="gray")
     poleA2.configure(fg="gray", bg="gray")
     poleA3.configure(fg="gray", bg="gray")
@@ -276,5 +276,6 @@ def clear1(): # reset planszy do poziomu startowego
     poleG3.configure(fg="gray", bg="gray")
     poleG4.configure(fg="gray", bg="gray")
     poleG5.configure(fg="gray", bg="gray")
+
 
 window.mainloop()  # zatrzymanie okna na ekranie komputera
