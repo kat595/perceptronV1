@@ -42,7 +42,7 @@ button3 = Button(window, text="rozstrzygnij", command=decide, font=("Comic Sans"
 button3.pack()
 button3.place(x=540, y=0)
 
-frame = Frame(window, bg="green", bd=5)  # ramka w ktorej trzymamy board do perceptronu
+frame = Frame(window, bg="green", bd=5)  # ramka w ktorej trzymamy board do perceptronu 5x7
 frame.pack()
 frame.place(x=215, y=100)
 
