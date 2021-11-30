@@ -1,12 +1,17 @@
 # This is a sample Python script.
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import random
 import PIL.Image
 from PIL import ImageTk
 from tkinter import *
 import matplotlib.pyplot as plt
 from Funkcje import *
 
+#PLAN DO ZROBIENIA: ZROBIĆ MACIERZ DO KLIKALNEJ MATRYCY, KTORA ZMIENIA SIE ROWNOLEGLE
+#PRZYCISK UCZ SIE WYWOLUJE PETLE Z TRAIN
+#DOROBIC PETLE Z OUTPUT(TAKA SAMA JAK TRAIN), PRZYCISK ROZSTRZYGNIJ BEDZIE JA WYWOLYWAL
+#DODAC WYJSCIE KTORA LICZBA PASUJE W KONSOLI
 
 def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
@@ -16,7 +21,10 @@ def clear():  # definicja funkcji zaimplementowanej pozniej
     clear1()
 
 #PRZYKLADY UCZACE
-Zero_grid = [
+
+Data = [[]] * 10
+
+Data[0] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
@@ -26,7 +34,7 @@ Zero_grid = [
     [1, 1, 1, 1, 1]
 ]
 
-Jeden_grid = [
+Data[1] = [
     [0, 0, 0, 0, 1],
     [0, 0, 0, 1, 1],
     [0, 0, 1, 0, 1],
@@ -36,7 +44,7 @@ Jeden_grid = [
     [0, 0, 0, 0, 1]
 ]
 
-Dwa_grid = [
+Data[2] = [
     [1, 1, 1, 1, 1],
     [0, 0, 0, 0, 1],
     [0, 0, 0, 0, 1],
@@ -46,7 +54,7 @@ Dwa_grid = [
     [1, 1, 1, 1, 1]
 ]
 
-Trzy_grid = [
+Data[3] = [
     [1, 1, 1, 1, 1],
     [0, 0, 0, 0, 1],
     [0, 0, 0, 0, 1],
@@ -54,9 +62,10 @@ Trzy_grid = [
     [0, 0, 0, 0, 1],
     [0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1]
+
 ]
 
-Cztery_grid = [
+Data[4] = [
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
@@ -66,7 +75,7 @@ Cztery_grid = [
     [0, 0, 0, 0, 1]
 ]
 
-Piec_grid = [
+Data[5] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0],
     [1, 0, 0, 0, 0],
@@ -76,7 +85,7 @@ Piec_grid = [
     [1, 1, 1, 1, 1]
 ]
 
-Szesc_grid = [
+Data[6] =  [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0],
     [1, 0, 0, 0, 0],
@@ -86,7 +95,7 @@ Szesc_grid = [
     [1, 1, 1, 1, 1]
 ]
 
-Siedem_grid = [
+Data[7] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
@@ -96,7 +105,7 @@ Siedem_grid = [
     [0, 0, 0, 0, 1]
 ]
 
-Osiem_grid = [
+Data[8] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
@@ -106,7 +115,7 @@ Osiem_grid = [
     [1, 1, 1, 1, 1]
 ]
 
-Dziewiec_grid = [
+Data[9] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
     [1, 0, 0, 0, 1],
@@ -115,29 +124,59 @@ Dziewiec_grid = [
     [0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1]
 ]
+
 #PRZYKLADY UCZACE
+
+#FUNKCJE
+
+def fourier_transform(x):
+    a = np.abs(np.fft.fft(x))
+    a[0] = 0
+    return a / np.amax(a)
+
+def normalize(x):
+    return (x - np.min(x)) / (np.max(x) - np.min(x))
+
+def activation(x):
+    return 1 / (1 + np.exp(-x))
+
+def classify():
+    for i in range(10):
+        out = i
+        print(i, ": ")
+#FUNKCJE
 
 #ADALINE
 class Adaline():
-    def __init__(self, no_of_inputs, learning_rate=0.01, iterations=100):
+    def __init__(self, no_of_inputs, learning_rate=0.01, iterations=100, bias=True):
         self.no_of_inputs = no_of_inputs
         self.learning_rate = learning_rate
         self.iterations = iterations
-        self.weights = np.random.random(2 * self.no_of_inputs)  # Zadanie: dopisac bias.
+        self.weights = np.random.random(2 * self.no_of_inputs)
+        self.bias = bias
+        if self.bias:
+            self.weights = (np.random.rand(2 * self.no_of_inputs + 1) - 0.5) / 1000
+        else:
+            self.weights = (np.random.rand(2 * self.no_of_inputs) - 0.5) / 1000
         self.errors = []
 
-    def train(self, training_data_x, training_data_y, name):
-        training_data_x = self._standarize(training_data_x)
+    def train(self, training_data_x, training_data_y):
+        training_data_x = normalize(training_data_x) - 0.5 * 0.01
+        training_data_y = normalize(training_data_y) - 0.5 * 0.01
         for _ in range(self.iterations):
             e = 0
-            for x, y in zip(training_data_x, training_data_y):  # Zadanie: losowy wybor przykladow uczacych.
+            array = list(zip(training_data_x, training_data_y))
+            random.shuffle(array)
+            for x, y in array:  # Zadanie: losowy wybor przykladow uczacych.
                 out = self.output(x)
+                x = np.concatenate([x, fourier_transform(x)])
+                if self.bias:
+                    x = np.concatenate([x, [1]])
                 self.weights += self.learning_rate * (y - out) * x
                 e += (y - out) ** 2
             self.errors.append(e)
-        plt.plot(range(len(self.errors)), self.errors)
-        plt.savefig('learning_curve_' + name + '.pdf')
-        plt.close()
+
+
 
     def _standarize(self, training_data_x):
         pass
@@ -155,14 +194,25 @@ class Adaline():
     def _activation_derivative(x):
         return 1
 
-    def output(self, input):
-        inp = np.concatenate([input, fourier_transform(input)])
-        summation = self._activation(np.dot(self.weights, inp))
+    def output(self, x):
+        print(x)
+        inp = np.concatenate([x, fourier_transform(x)])
+        if self.bias:
+            inp = np.concatenate([inp, [1]])
+        summation = activation(np.dot(self.weights, inp))
         return summation
+
 #ADALINE
 
 adalines = [Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5),
             Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5)]
+
+Data_x = [ np.array(t).flatten() for t in Data ]
+
+for i in range(10):
+    Data_y = np.zeros(10)
+    Data_y[i] = 1
+    adalines[i].train(Data_x, Data_y)
 
 #GUI
 window = Tk()  # instancja okna
@@ -187,7 +237,7 @@ button2 = Button(window, text="ucz sie", command=learn, font=("Comic Sans", 20),
 button2.pack()
 button2.place(x=270, y=0)
 
-button3 = Button(window, text="rozstrzygnij", command=decide, font=("Comic Sans", 20), width=15,
+button3 = Button(window, text="rozstrzygnij", command=classify, font=("Comic Sans", 20), width=15,
                  state=ACTIVE)  # przycisk rozstrzygnij w prawym gornym rogu
 button3.pack()
 button3.place(x=540, y=0)
