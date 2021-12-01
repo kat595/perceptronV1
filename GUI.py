@@ -5,13 +5,15 @@ import random
 import PIL.Image
 from PIL import ImageTk
 from tkinter import *
-import matplotlib.pyplot as plt
-from Funkcje import *
+import numpy as np
 
-#PLAN DO ZROBIENIA: ZROBIĆ MACIERZ DO KLIKALNEJ MATRYCY, KTORA ZMIENIA SIE ROWNOLEGLE
-#PRZYCISK UCZ SIE WYWOLUJE PETLE Z TRAIN
-#DOROBIC PETLE Z OUTPUT(TAKA SAMA JAK TRAIN), PRZYCISK ROZSTRZYGNIJ BEDZIE JA WYWOLYWAL
-#DODAC WYJSCIE KTORA LICZBA PASUJE W KONSOLI
+
+# PLAN DO ZROBIENIA: ZROBIĆ MACIERZ DO KLIKALNEJ MATRYCY, KTORA ZMIENIA SIE ROWNOLEGLE
+# PRZYCISK UCZ SIE WYWOLUJE PETLE Z TRAIN
+# DOROBIC PETLE Z OUTPUT(TAKA SAMA JAK TRAIN), PRZYCISK ROZSTRZYGNIJ BEDZIE JA WYWOLYWAL
+# DODAC WYJSCIE KTORA LICZBA PASUJE W KONSOLI //WYKONANED
+
+#COS JUZ ZWRACA, POBAWIC SIE TYM
 
 def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
@@ -20,7 +22,17 @@ def on_black(num):  # definicja funkcji zaimplementowanej pozniej
 def clear():  # definicja funkcji zaimplementowanej pozniej
     clear1()
 
-#PRZYKLADY UCZACE
+
+# PRZYKLADY UCZACE
+Matrix = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
 
 Data = [[]] * 10
 
@@ -85,7 +97,7 @@ Data[5] = [
     [1, 1, 1, 1, 1]
 ]
 
-Data[6] =  [
+Data[6] = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0],
     [1, 0, 0, 0, 0],
@@ -125,28 +137,28 @@ Data[9] = [
     [1, 1, 1, 1, 1]
 ]
 
-#PRZYKLADY UCZACE
 
-#FUNKCJE
+# PRZYKLADY UCZACE
+
+# FUNKCJE
 
 def fourier_transform(x):
     a = np.abs(np.fft.fft(x))
     a[0] = 0
     return a / np.amax(a)
 
+
 def normalize(x):
     return (x - np.min(x)) / (np.max(x) - np.min(x))
+
 
 def activation(x):
     return 1 / (1 + np.exp(-x))
 
-def classify():
-    for i in range(10):
-        out = i
-        print(i, ": ")
-#FUNKCJE
 
-#ADALINE
+# FUNKCJE
+
+# ADALINE
 class Adaline():
     def __init__(self, no_of_inputs, learning_rate=0.01, iterations=100, bias=True):
         self.no_of_inputs = no_of_inputs
@@ -176,8 +188,6 @@ class Adaline():
                 e += (y - out) ** 2
             self.errors.append(e)
 
-
-
     def _standarize(self, training_data_x):
         pass
         # Zadanie: X' = (X - Mean(X))/Std(X)
@@ -195,26 +205,38 @@ class Adaline():
         return 1
 
     def output(self, x):
-        print(x)
+        #print(x)
         inp = np.concatenate([x, fourier_transform(x)])
         if self.bias:
             inp = np.concatenate([inp, [1]])
         summation = activation(np.dot(self.weights, inp))
         return summation
 
-#ADALINE
 
+# ADALINE
+
+#FUNKCJE2
 adalines = [Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5),
             Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5)]
 
-Data_x = [ np.array(t).flatten() for t in Data ]
+def learn():
+    data_x = [np.array(t).flatten() for t in Data]
 
-for i in range(10):
-    Data_y = np.zeros(10)
-    Data_y[i] = 1
-    adalines[i].train(Data_x, Data_y)
+    for i in range(10):
+        data_y = np.zeros(10)
+        data_y[i] = 1
+        adalines[i].train(data_x, data_y)
 
-#GUI
+def decide():
+    #data_matrix = [np.array(t).flatten() for t in Matrix]
+    data_matrix = np.array(Matrix).flatten()
+    for i in range(10):
+        print(adalines[i].output(data_matrix))
+
+
+#FUNKCJE2
+
+# GUI
 window = Tk()  # instancja okna
 window.geometry("785x850")
 window.title("Perceptron")
@@ -237,7 +259,7 @@ button2 = Button(window, text="ucz sie", command=learn, font=("Comic Sans", 20),
 button2.pack()
 button2.place(x=270, y=0)
 
-button3 = Button(window, text="rozstrzygnij", command=classify, font=("Comic Sans", 20), width=15,
+button3 = Button(window, text="rozstrzygnij", command=decide, font=("Comic Sans", 20), width=15,
                  state=ACTIVE)  # przycisk rozstrzygnij w prawym gornym rogu
 button3.pack()
 button3.place(x=540, y=0)
@@ -359,80 +381,117 @@ poleG5 = Button(frame, font='Times 20 bold', bg='gray', fg='gray', height=2, wid
 poleG5.grid(row=6, column=4)
 
 window.config(background='#100b40')  # kolor tła okna
-#GUI
+
+
+# GUI
 
 
 def on_black1(num):  # zamalowanie wybranego kafelka na czarno
     if num == 'A1':
         poleA1.configure(fg="black", bg="black")
+        Matrix[0][0] = 1
     if num == 'A2':
         poleA2.configure(fg="black", bg="black")
+        Matrix[0][1] = 1
     if num == 'A3':
         poleA3.configure(fg="black", bg="black")
+        Matrix[0][2] = 1
     if num == 'A4':
         poleA4.configure(fg="black", bg="black")
+        Matrix[0][3] = 1
     if num == 'A5':
         poleA5.configure(fg="black", bg="black")
+        Matrix[0][4] = 1
     if num == 'B1':
         poleB1.configure(fg="black", bg="black")
+        Matrix[1][0] = 1
     if num == 'B2':
         poleB2.configure(fg="black", bg="black")
+        Matrix[1][1] = 1
     if num == 'B3':
         poleB3.configure(fg="black", bg="black")
+        Matrix[1][2] = 1
     if num == 'B4':
         poleB4.configure(fg="black", bg="black")
+        Matrix[1][3] = 1
     if num == 'B5':
         poleB5.configure(fg="black", bg="black")
+        Matrix[1][4] = 1
     if num == 'C1':
         poleC1.configure(fg="black", bg="black")
+        Matrix[2][0] = 1
     if num == 'C2':
         poleC2.configure(fg="black", bg="black")
+        Matrix[2][1] = 1
     if num == 'C3':
         poleC3.configure(fg="black", bg="black")
+        Matrix[2][2] = 1
     if num == 'C4':
         poleC4.configure(fg="black", bg="black")
+        Matrix[2][3] = 1
     if num == 'C5':
         poleC5.configure(fg="black", bg="black")
+        Matrix[2][4] = 1
     if num == 'D1':
         poleD1.configure(fg="black", bg="black")
+        Matrix[3][0] = 1
     if num == 'D2':
         poleD2.configure(fg="black", bg="black")
+        Matrix[3][1] = 1
     if num == 'D3':
         poleD3.configure(fg="black", bg="black")
+        Matrix[3][2] = 1
     if num == 'D4':
         poleD4.configure(fg="black", bg="black")
+        Matrix[3][3] = 1
     if num == 'D5':
         poleD5.configure(fg="black", bg="black")
+        Matrix[3][4] = 1
     if num == 'E1':
         poleE1.configure(fg="black", bg="black")
+        Matrix[4][0] = 1
     if num == 'E2':
         poleE2.configure(fg="black", bg="black")
+        Matrix[4][1] = 1
     if num == 'E3':
         poleE3.configure(fg="black", bg="black")
+        Matrix[4][2] = 1
     if num == 'E4':
         poleE4.configure(fg="black", bg="black")
+        Matrix[4][3] = 1
     if num == 'E5':
         poleE5.configure(fg="black", bg="black")
+        Matrix[4][4] = 1
     if num == 'F1':
         poleF1.configure(fg="black", bg="black")
+        Matrix[5][0] = 1
     if num == 'F2':
         poleF2.configure(fg="black", bg="black")
+        Matrix[5][1] = 1
     if num == 'F3':
         poleF3.configure(fg="black", bg="black")
+        Matrix[5][2] = 1
     if num == 'F4':
         poleF4.configure(fg="black", bg="black")
+        Matrix[5][3] = 1
     if num == 'F5':
         poleF5.configure(fg="black", bg="black")
+        Matrix[5][4] = 1
     if num == 'G1':
         poleG1.configure(fg="black", bg="black")
+        Matrix[6][0] = 1
     if num == 'G2':
         poleG2.configure(fg="black", bg="black")
+        Matrix[6][1] = 1
     if num == 'G3':
         poleG3.configure(fg="black", bg="black")
+        Matrix[6][2] = 1
     if num == 'G4':
         poleG4.configure(fg="black", bg="black")
+        Matrix[6][3] = 1
     if num == 'G5':
         poleG5.configure(fg="black", bg="black")
+        Matrix[6][4] = 1
 
 
 def clear1():  # reset planszy do poziomu startowego
@@ -477,6 +536,10 @@ def clear1():  # reset planszy do poziomu startowego
     poleG3.configure(fg="gray", bg="gray")
     poleG4.configure(fg="gray", bg="gray")
     poleG5.configure(fg="gray", bg="gray")
+
+    for i in range(7):
+        for j in range(5):
+            Matrix[i][j] = 0
 
 
 window.mainloop()  # zatrzymanie okna na ekranie komputera
