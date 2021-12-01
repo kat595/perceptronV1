@@ -13,7 +13,7 @@ import numpy as np
 # DOROBIC PETLE Z OUTPUT(TAKA SAMA JAK TRAIN), PRZYCISK ROZSTRZYGNIJ BEDZIE JA WYWOLYWAL
 # DODAC WYJSCIE KTORA LICZBA PASUJE W KONSOLI //WYKONANED
 
-#COS JUZ ZWRACA, POBAWIC SIE TYM
+# COS JUZ ZWRACA, POBAWIC SIE TYM
 
 def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
@@ -140,26 +140,9 @@ Data[9] = [
 
 # PRZYKLADY UCZACE
 
-# FUNKCJE
-
-def fourier_transform(x):
-    a = np.abs(np.fft.fft(x))
-    a[0] = 0
-    return a / np.amax(a)
-
-
-def normalize(x):
-    return (x - np.min(x)) / (np.max(x) - np.min(x))
-
-
-def activation(x):
-    return 1 / (1 + np.exp(-x))
-
-
-# FUNKCJE
-
 # ADALINE
-class Adaline():
+
+class Adaline(object):
     def __init__(self, no_of_inputs, learning_rate=0.01, iterations=100, bias=True):
         self.no_of_inputs = no_of_inputs
         self.learning_rate = learning_rate
@@ -173,15 +156,15 @@ class Adaline():
         self.errors = []
 
     def train(self, training_data_x, training_data_y):
-        training_data_x = normalize(training_data_x) - 0.5 * 0.01
-        training_data_y = normalize(training_data_y) - 0.5 * 0.01
+        training_data_x = self.normalize(training_data_x) - 0.5 * 0.01
+        training_data_y = self.normalize(training_data_y) - 0.5 * 0.01
         for _ in range(self.iterations):
             e = 0
             array = list(zip(training_data_x, training_data_y))
             random.shuffle(array)
             for x, y in array:  # Zadanie: losowy wybor przykladow uczacych.
                 out = self.output(x)
-                x = np.concatenate([x, fourier_transform(x)])
+                x = np.concatenate([x, self.fourier_transform(x)])
                 if self.bias:
                     x = np.concatenate([x, [1]])
                 self.weights += self.learning_rate * (y - out) * x
@@ -192,32 +175,33 @@ class Adaline():
         pass
         # Zadanie: X' = (X - Mean(X))/Std(X)
 
-    def _normalize(self, training_data_x):
-        pass
-        # Zadanie: X' = (X - min(X))/(max(X) - min(X))
+    def fourier_transform(self, x):
+        a = np.abs(np.fft.fft(x))
+        a[0] = 0
+        return a / np.amax(a)
 
-    def _activation(x):
-        # Zadanie: dopisac fragment kodu realizujacy
-        # Adaline w przypadku funkcji aktywacji innej niz f(x)=x.
-        return x
+    def normalize(self, x):
+        return (x - np.min(x)) / (np.max(x) - np.min(x))
 
-    def _activation_derivative(x):
-        return 1
+    def activation(self, x):
+        return 1 / (1 + np.exp(-x))
 
     def output(self, x):
-        #print(x)
-        inp = np.concatenate([x, fourier_transform(x)])
+        # print(x)
+        inp = np.concatenate([x, self.fourier_transform(x)])
         if self.bias:
             inp = np.concatenate([inp, [1]])
-        summation = activation(np.dot(self.weights, inp))
+        summation = self.activation(np.dot(self.weights, inp))
         return summation
 
 
 # ADALINE
 
-#FUNKCJE2
+# MAIN
+
 adalines = [Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5),
             Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5), Adaline(7 * 5)]
+
 
 def learn():
     data_x = [np.array(t).flatten() for t in Data]
@@ -227,16 +211,17 @@ def learn():
         data_y[i] = 1
         adalines[i].train(data_x, data_y)
 
+
 def decide():
-    #data_matrix = [np.array(t).flatten() for t in Matrix]
     data_matrix = np.array(Matrix).flatten()
     for i in range(10):
-        print(adalines[i].output(data_matrix))
+        print(i, ':', (int)(adalines[i].output(data_matrix) * 100), '%')
 
 
-#FUNKCJE2
+# MAIN
 
 # GUI
+
 window = Tk()  # instancja okna
 window.geometry("785x850")
 window.title("Perceptron")
