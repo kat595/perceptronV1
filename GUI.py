@@ -23,6 +23,22 @@ def clear():  # definicja funkcji zaimplementowanej pozniej
     clear1()
 
 
+def on_left():
+    on_left1()
+
+
+def on_up():
+    on_up1()
+
+
+def on_down():
+    on_down1()
+
+
+def on_right():
+    on_right1()
+
+
 # PRZYKLADY UCZACE
 Matrix = [
     [0, 0, 0, 0, 0],
@@ -248,6 +264,30 @@ button3 = Button(window, text="rozstrzygnij", command=decide, font=("Comic Sans"
                  state=ACTIVE)  # przycisk rozstrzygnij w prawym gornym rogu
 button3.pack()
 button3.place(x=540, y=0)
+
+button4 = Button(window, text="w lewo", command=on_left, font=("Comic Sans", 20), width=10,
+                 state=ACTIVE)  # przycisk do przesuniecia cyfry w lewo
+
+button4.pack()
+button4.place(x=0, y=800)
+
+button5 = Button(window, text="w góre", command=on_up, font=("Comic Sans", 20), width=10,
+                 state=ACTIVE)  # przycisk do przesuniecia cyfry w góre
+
+button5.pack()
+button5.place(x=200, y=800)
+
+button6 = Button(window, text="w dół", command=on_down, font=("Comic Sans", 20), width=10,
+                 state=ACTIVE)  # przycisk do przesuniecia cyfry w dół
+
+button6.pack()
+button6.place(x=400, y=800)
+
+button7 = Button(window, text="w prawo", command=on_right, font=("Comic Sans", 20), width=15,
+                 state=ACTIVE)  # przycisk do przesuniecia cyfry w prawo
+
+button7.pack()
+button7.place(x=600, y=800)
 
 frame = Frame(window, bg="green", bd=5)  # ramka w ktorej trzymamy board do perceptronu 5x7
 frame.pack()
@@ -479,6 +519,114 @@ def on_black1(num):  # zamalowanie wybranego kafelka na czarno
         Matrix[6][4] = 1
 
 
+def on_black2(numx, numy):  # funkcja do przesuwania cyfry na planszy, zamalowanie wybranego kafelka na czarno
+    if numx == 0 and numy == 0:
+        poleA1.configure(fg="black", bg="black")
+        Matrix[0][0] = 1
+    if numx == 0 and numy == 1:
+        poleA2.configure(fg="black", bg="black")
+        Matrix[0][1] = 1
+    if numx == 0 and numy == 2:
+        poleA3.configure(fg="black", bg="black")
+        Matrix[0][2] = 1
+    if numx == 0 and numy == 3:
+        poleA4.configure(fg="black", bg="black")
+        Matrix[0][3] = 1
+    if numx == 0 and numy == 4:
+        poleA5.configure(fg="black", bg="black")
+        Matrix[0][4] = 1
+    if numx == 1 and numy == 0:
+        poleB1.configure(fg="black", bg="black")
+        Matrix[1][0] = 1
+    if numx == 1 and numy == 1:
+        poleB2.configure(fg="black", bg="black")
+        Matrix[1][1] = 1
+    if numx == 1 and numy == 2:
+        poleB3.configure(fg="black", bg="black")
+        Matrix[1][2] = 1
+    if numx == 1 and numy == 3:
+        poleB4.configure(fg="black", bg="black")
+        Matrix[1][3] = 1
+    if numx == 1 and numy == 4:
+        poleB5.configure(fg="black", bg="black")
+        Matrix[1][4] = 1
+    if numx == 2 and numy == 0:
+        poleC1.configure(fg="black", bg="black")
+        Matrix[2][0] = 1
+    if numx == 2 and numy == 1:
+        poleC2.configure(fg="black", bg="black")
+        Matrix[2][1] = 1
+    if numx == 2 and numy == 2:
+        poleC3.configure(fg="black", bg="black")
+        Matrix[2][2] = 1
+    if numx == 2 and numy == 3:
+        poleC4.configure(fg="black", bg="black")
+        Matrix[2][3] = 1
+    if numx == 2 and numy == 4:
+        poleC5.configure(fg="black", bg="black")
+        Matrix[2][4] = 1
+    if numx == 3 and numy == 0:
+        poleD1.configure(fg="black", bg="black")
+        Matrix[3][0] = 1
+    if numx == 3 and numy == 1:
+        poleD2.configure(fg="black", bg="black")
+        Matrix[3][1] = 1
+    if numx == 3 and numy == 2:
+        poleD3.configure(fg="black", bg="black")
+        Matrix[3][2] = 1
+    if numx == 3 and numy == 3:
+        poleD4.configure(fg="black", bg="black")
+        Matrix[3][3] = 1
+    if numx == 3 and numy == 4:
+        poleD5.configure(fg="black", bg="black")
+        Matrix[3][4] = 1
+    if numx == 4 and numy == 0:
+        poleE1.configure(fg="black", bg="black")
+        Matrix[4][0] = 1
+    if numx == 4 and numy == 1:
+        poleE2.configure(fg="black", bg="black")
+        Matrix[4][1] = 1
+    if numx == 4 and numy == 2:
+        poleE3.configure(fg="black", bg="black")
+        Matrix[4][2] = 1
+    if numx == 4 and numy == 3:
+        poleE4.configure(fg="black", bg="black")
+        Matrix[4][3] = 1
+    if numx == 4 and numy == 4:
+        poleE5.configure(fg="black", bg="black")
+        Matrix[4][4] = 1
+    if numx == 5 and numy == 0:
+        poleF1.configure(fg="black", bg="black")
+        Matrix[5][0] = 1
+    if numx == 5 and numy == 1:
+        poleF2.configure(fg="black", bg="black")
+        Matrix[5][1] = 1
+    if numx == 5 and numy == 2:
+        poleF3.configure(fg="black", bg="black")
+        Matrix[5][2] = 1
+    if numx == 5 and numy == 3:
+        poleF4.configure(fg="black", bg="black")
+        Matrix[5][3] = 1
+    if numx == 5 and numy == 4:
+        poleF5.configure(fg="black", bg="black")
+        Matrix[5][4] = 1
+    if numx == 6 and numy == 0:
+        poleG1.configure(fg="black", bg="black")
+        Matrix[6][0] = 1
+    if numx == 6 and numy == 1:
+        poleG2.configure(fg="black", bg="black")
+        Matrix[6][1] = 1
+    if numx == 6 and numy == 2:
+        poleG3.configure(fg="black", bg="black")
+        Matrix[6][2] = 1
+    if numx == 6 and numy == 3:
+        poleG4.configure(fg="black", bg="black")
+        Matrix[6][3] = 1
+    if numx == 6 and numy == 4:
+        poleG5.configure(fg="black", bg="black")
+        Matrix[6][4] = 1
+
+
 def clear1():  # reset planszy do poziomu startowego
     poleA1.configure(fg="gray", bg="gray")
     poleA2.configure(fg="gray", bg="gray")
@@ -525,6 +673,114 @@ def clear1():  # reset planszy do poziomu startowego
     for i in range(7):
         for j in range(5):
             Matrix[i][j] = 0
+
+
+def on_left1():
+    matrix_new = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
+    for i in range(7):
+        for j in range(5):
+            if Matrix[i][j] == 1:
+                if j-1 >= 0:
+                    matrix_new[i][j-1] = 1
+
+    for i in range(7):
+        for j in range(5):
+            Matrix[i][j] = 0
+
+    clear1()
+    for i in range(7):
+        for j in range(5):
+            if matrix_new[i][j] == 1:
+                on_black2(i, j)
+
+
+def on_up1():
+    matrix_new = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
+    for i in range(7):
+        for j in range(5):
+            if Matrix[i][j] == 1:
+                if i-1 >= 0:
+                    matrix_new[i-1][j] = 1
+
+    for i in range(7):
+        for j in range(5):
+            Matrix[i][j] = 0
+
+    clear1()
+    for i in range(7):
+        for j in range(5):
+            if matrix_new[i][j] == 1:
+                on_black2(i, j)
+
+
+def on_down1():
+    matrix_new = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
+    for i in range(7):
+        for j in range(5):
+            if Matrix[i][j] == 1:
+                if i+1 >= 0:
+                    matrix_new[i+1][j] = 1
+
+    for i in range(7):
+        for j in range(5):
+            Matrix[i][j] = 0
+
+    clear1()
+    for i in range(7):
+        for j in range(5):
+            if matrix_new[i][j] == 1:
+                on_black2(i, j)
+
+
+def on_right1():
+    matrix_new = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
+    for i in range(7):
+        for j in range(5):
+            if Matrix[i][j] == 1:
+                if j+1 >= 0:
+                    matrix_new[i][j+1] = 1
+
+    for i in range(7):
+        for j in range(5):
+            Matrix[i][j] = 0
+
+    clear1()
+    for i in range(7):
+        for j in range(5):
+            if matrix_new[i][j] == 1:
+                on_black2(i, j)
 
 
 window.mainloop()  # zatrzymanie okna na ekranie komputera
