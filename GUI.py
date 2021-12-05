@@ -8,8 +8,6 @@ from tkinter import *
 import numpy as np
 
 
-# PLAN DO ZROBIENIA: DODAĆ ODSZUMIANIE
-
 def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
 
@@ -18,23 +16,23 @@ def clear():  # definicja funkcji zaimplementowanej pozniej
     clear1()
 
 
-def on_left():
+def on_left():  # definicja funkcji zaimplementowanej pozniej
     on_left1()
 
 
-def on_up():
+def on_up():  # definicja funkcji zaimplementowanej pozniej
     on_up1()
 
 
-def on_down():
+def on_down():  # definicja funkcji zaimplementowanej pozniej
     on_down1()
 
 
-def on_right():
+def on_right():  # definicja funkcji zaimplementowanej pozniej
     on_right1()
 
 
-def odszum():
+def odszum():  # definicja funkcji zaimplementowanej pozniej
     odszum1()
 
 
@@ -186,10 +184,6 @@ class Adaline(object):
                 e += (y - out) ** 2
             self.errors.append(e)
 
-    def _standarize(self, training_data_x):
-        pass
-        # Zadanie: X' = (X - Mean(X))/Std(X)
-
     def fourier_transform(self, x):
         a = np.abs(np.fft.fft(x))
         a[0] = 0
@@ -227,10 +221,20 @@ def learn():
         adalines[i].train(data_x, data_y)
 
 
-def decide():
+def decide(num):
     data_matrix = np.array(Matrix).flatten()
+    array_numbers = [[]] * 10
+    max_value = 0
+    # odszumianie automatyczne (% szans poprawności cyfry najbardziej prawdopodobnej zostaje zwiekszone)
     for i in range(10):
-        print(i, ':', (int)(adalines[i].output(data_matrix) * 100), '%')
+        array_numbers[i] = (int)(adalines[i].output(data_matrix) * 100)
+        if array_numbers[i] > max_value:
+            max_value = array_numbers[i]
+    for i in range(10):
+        if (int)(adalines[i].output(data_matrix) * 100) == max_value:
+            print(i, ':', (int)(adalines[i].output(data_matrix) * 100 + num), '%')
+        else:
+            print(i, ':', (int)(adalines[i].output(data_matrix) * 100), '%')
 
 
 # MAIN
@@ -259,7 +263,7 @@ button2 = Button(window, text="ucz sie", command=learn, font=("Comic Sans", 20),
 button2.pack()
 button2.place(x=270, y=0)
 
-button3 = Button(window, text="rozstrzygnij", command=decide, font=("Comic Sans", 20), width=15,
+button3 = Button(window, text="rozstrzygnij", command=lambda: decide(5), font=("Comic Sans", 20), width=15,
                  state=ACTIVE)  # przycisk rozstrzygnij w prawym gornym rogu
 button3.pack()
 button3.place(x=540, y=0)
@@ -289,7 +293,7 @@ button7.pack()
 button7.place(x=600, y=800)
 
 button8 = Button(window, text="odszum", command=odszum, font=("Comic Sand", 20), width=10,
-                 state=ACTIVE) # przycisk do odszumiania
+                 state=ACTIVE)  # przycisk do odszumiania ręcznego
 
 button8.pack()
 button8.place(x=600, y=400)
@@ -680,7 +684,7 @@ def clear1():  # reset planszy do poziomu startowego
             Matrix[i][j] = 0
 
 
-def on_left1():
+def on_left1():  # przesuniecie cyfry na matrycy w lewo
     matrix_new = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -693,8 +697,8 @@ def on_left1():
     for i in range(7):
         for j in range(5):
             if Matrix[i][j] == 1:
-                if j-1 >= 0:
-                    matrix_new[i][j-1] = 1
+                if j - 1 >= 0:
+                    matrix_new[i][j - 1] = 1
 
     for i in range(7):
         for j in range(5):
@@ -707,7 +711,7 @@ def on_left1():
                 on_black2(i, j)
 
 
-def on_up1():
+def on_up1():  # przesuniecie cyfry na matrycy w góre
     matrix_new = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -720,8 +724,8 @@ def on_up1():
     for i in range(7):
         for j in range(5):
             if Matrix[i][j] == 1:
-                if i-1 >= 0:
-                    matrix_new[i-1][j] = 1
+                if i - 1 >= 0:
+                    matrix_new[i - 1][j] = 1
 
     for i in range(7):
         for j in range(5):
@@ -734,7 +738,7 @@ def on_up1():
                 on_black2(i, j)
 
 
-def on_down1():
+def on_down1():  # przesuniecie cyfry na matrycy w dół
     matrix_new = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -747,8 +751,8 @@ def on_down1():
     for i in range(7):
         for j in range(5):
             if Matrix[i][j] == 1:
-                if i+1 >= 0:
-                    matrix_new[i+1][j] = 1
+                if i + 1 >= 0:
+                    matrix_new[i + 1][j] = 1
 
     for i in range(7):
         for j in range(5):
@@ -761,7 +765,7 @@ def on_down1():
                 on_black2(i, j)
 
 
-def on_right1():
+def on_right1():  # przesuniecie cyfry na matrycy w prawo
     matrix_new = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -774,8 +778,8 @@ def on_right1():
     for i in range(7):
         for j in range(5):
             if Matrix[i][j] == 1:
-                if j+1 >= 0:
-                    matrix_new[i][j+1] = 1
+                if j + 1 >= 0:
+                    matrix_new[i][j + 1] = 1
 
     for i in range(7):
         for j in range(5):
@@ -788,8 +792,8 @@ def on_right1():
                 on_black2(i, j)
 
 
-def odszum1():
-    pass
+def odszum1(): # odszumianie ręczne
+    decide(10)  # przypisujemy większy wzrost % szans najprawdopodobniejszej cyfry
 
 
 window.mainloop()  # zatrzymanie okna na ekranie komputera
