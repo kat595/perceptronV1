@@ -8,12 +8,7 @@ from tkinter import *
 import numpy as np
 
 
-# PLAN DO ZROBIENIA: ZROBIĆ MACIERZ DO KLIKALNEJ MATRYCY, KTORA ZMIENIA SIE ROWNOLEGLE
-# PRZYCISK UCZ SIE WYWOLUJE PETLE Z TRAIN
-# DOROBIC PETLE Z OUTPUT(TAKA SAMA JAK TRAIN), PRZYCISK ROZSTRZYGNIJ BEDZIE JA WYWOLYWAL
-# DODAC WYJSCIE KTORA LICZBA PASUJE W KONSOLI //WYKONANED
-
-# COS JUZ ZWRACA, POBAWIC SIE TYM
+# PLAN DO ZROBIENIA: DODAĆ ODSZUMIANIE
 
 def on_black(num):  # definicja funkcji zaimplementowanej pozniej
     on_black1(num)
@@ -37,6 +32,10 @@ def on_down():
 
 def on_right():
     on_right1()
+
+
+def odszum():
+    odszum1()
 
 
 # PRZYKLADY UCZACE
@@ -288,6 +287,12 @@ button7 = Button(window, text="w prawo", command=on_right, font=("Comic Sans", 2
 
 button7.pack()
 button7.place(x=600, y=800)
+
+button8 = Button(window, text="odszum", command=odszum, font=("Comic Sand", 20), width=10,
+                 state=ACTIVE) # przycisk do odszumiania
+
+button8.pack()
+button8.place(x=600, y=400)
 
 frame = Frame(window, bg="green", bd=5)  # ramka w ktorej trzymamy board do perceptronu 5x7
 frame.pack()
@@ -781,6 +786,10 @@ def on_right1():
         for j in range(5):
             if matrix_new[i][j] == 1:
                 on_black2(i, j)
+
+
+def odszum1():
+    pass
 
 
 window.mainloop()  # zatrzymanie okna na ekranie komputera
